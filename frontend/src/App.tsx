@@ -1,17 +1,18 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './App.css';
 
 function App() {
-  const [content, setContent] = useState('Welcome, Jenni.ai team! Highlight this text to experience the "Paraphrasing" feature! ');
+  const editorRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (editorRef.current) {
+      editorRef.current.textContent = 'Welcome, Jenni.ai team! Highlight this text to experience the "Paraphrasing" feature! ';
+    }
+  }, []);
   const [selectedText, setSelectedText] = useState('');
   const [isParaphrasing, setIsParaphrasing] = useState(false);
   const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0, show: false });
-  const editorRef = useRef<HTMLDivElement>(null);
 
-  const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
-    const newContent = e.currentTarget.textContent || '';
-    setContent(newContent);
-  };
 
   const handleTextSelection = () => {
     const selection = window.getSelection();
@@ -68,10 +69,9 @@ function App() {
         range.insertNode(document.createTextNode(paraphrased));
         selection.removeAllRanges();
         
-        // Update the content state
-        if (editorRef.current) {
-          setContent(editorRef.current.textContent || '');
-        }
+        // Place cursor at the end of the inserted text
+        range.collapse(false);
+        selection.addRange(range);
       }
       setSelectedText('');
     } catch (error) {
@@ -92,15 +92,23 @@ function App() {
         <div
           ref={editorRef}
           contentEditable
-          onInput={handleInput}
           onSelect={handleTextSelection}
           onMouseUp={handleTextSelection}
           onKeyUp={handleTextSelection}
           className="text-editor"
-          style={{ whiteSpace: 'pre-wrap', minHeight: '200px', border: '1px solid #ccc', padding: '10px', outline: 'none' }}
+          style={{
+            whiteSpace: 'pre-wrap',
+            minHeight: '200px',
+            border: '1px solid #ccc',
+            padding: '10px',
+            outline: 'none',
+            direction: 'ltr',
+            unicodeBidi: 'normal',
+            textAlign: 'left'
+          }}
           suppressContentEditableWarning={true}
+          dir="ltr"
         >
-          {content}
         </div>
         
         {buttonPosition.show && (

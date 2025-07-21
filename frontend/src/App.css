@@ -97,6 +97,10 @@ body {
   transition: border-color 0.2s ease;
   background: white;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  direction: ltr;
+  unicode-bidi: normal;
+  white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 .text-editor:focus {
