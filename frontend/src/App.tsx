@@ -46,7 +46,8 @@ function App() {
     setButtonPosition({ x: 0, y: 0, show: false });
 
     try {
-      const response = await fetch('http://localhost:8080/paraphrase', {
+      // Use the deployed Render.com backend URL instead of localhost
+      const response = await fetch('https://texteditortest.onrender.com/paraphrase', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: selectedText }),
