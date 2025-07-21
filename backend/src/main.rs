@@ -70,7 +70,11 @@ async fn main() -> std::io::Result<()> {
     dotenv().ok();
     env_logger::init();
 
-    println!("Starting server on http://127.0.0.1:8080");
+    // Get port from environment variable for Render compatibility
+    let port = env::var("PORT").unwrap_or_else(|_| "8080".to_string());
+    let port = port.parse::<u16>().expect("PORT must be a number");
+    
+    println!("Starting server on 0.0.0.0:{}", port);
 
     HttpServer::new(|| {
         let cors = Cors::default()
@@ -83,7 +87,7 @@ async fn main() -> std::io::Result<()> {
             .wrap(Logger::default())
             .route("/paraphrase", web::post().to(paraphrase_handler))
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind(("0.0.0.0", port))?
     .run()
     .await
 }
