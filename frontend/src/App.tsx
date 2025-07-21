@@ -6,7 +6,7 @@ function App() {
 
   useEffect(() => {
     if (editorRef.current) {
-      editorRef.current.textContent = 'Welcome, Jenni.ai team! Highlight this text to experience the "Paraphrasing" feature! ';
+      editorRef.current.textContent = 'Welcome, Jenni.ai team! Highlight this text to experience the "Paraphrasing" feature! (If this feature errors, it is probably because my Render.com account is free and the backend spun out.)';
     }
   }, []);
   const [selectedText, setSelectedText] = useState('');
